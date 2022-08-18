@@ -325,7 +325,7 @@ class DataDictBase(dict):
                 if a not in data:
                     data.append(a)
 
-        ret = self.__class__()
+        ret = __class__()
         for d in data:
             if copy:
                 ret[d] = cp.deepcopy(self[d])
@@ -404,7 +404,7 @@ class DataDictBase(dict):
         add_shape = False
 
         if self.validate():
-            s = self.__class__()
+            s = __class__()
             for n, v in self.data_items():
                 v2 = v.copy()
                 v2.pop('values')
@@ -417,7 +417,7 @@ class DataDictBase(dict):
                 s.clear_meta()
 
             if same_type:
-                s = self.__class__(**s)
+                s = __class__(**s)
 
             return s
         return None
@@ -686,6 +686,12 @@ class DataDictBase(dict):
             ret[d]['values'] = vals
 
         return ret
+
+    def to_dict(self) -> Dict:
+        py_dict = {}
+        for k, dv in self.data_items():
+            py_dict[k] = dv["values"]
+        return py_dict
 
 
 class DataDict(DataDictBase):
