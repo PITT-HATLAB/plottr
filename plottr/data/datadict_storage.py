@@ -13,6 +13,7 @@ from pathlib import Path
 
 import numpy as np
 import h5py
+from tqdm import tqdm
 
 from plottr import QtGui, Signal, Slot, QtWidgets, QtCore
 
@@ -231,7 +232,8 @@ def datadict_from_hdf5(path: str,
                        startidx: Union[int, None] = None,
                        stopidx: Union[int, None] = None,
                        structure_only: bool = False,
-                       ignore_unequal_lengths: bool = True) -> DataDict:
+                       ignore_unequal_lengths: bool = True,
+                       progress=False) -> DataDict:
     """Load a DataDict from file.
 
     :param path: Full filepath without the file extension.
@@ -257,7 +259,7 @@ def datadict_from_hdf5(path: str,
 
         grp = f[groupname]
         keys = list(grp.keys())
-        lens = [len(grp[k][:]) for k in keys]
+        lens = [grp[k].shape[0] for k in keys]
 
         if len(set(lens)) > 1:
             if not ignore_unequal_lengths:
@@ -273,7 +275,11 @@ def datadict_from_hdf5(path: str,
             if is_meta_key(attr):
                 res[attr] = deh5ify(grp.attrs[attr])
 
-        for k in keys:
+        if progress:
+            tqdmk = tqdm(keys, desc="loading data")
+        else:
+            tqdmk = keys
+        for k in tqdmk:
             ds = grp[k]
             entry: Dict[str, Union[Collection[Any], np.ndarray]] = dict(values=np.array([]), )
 
