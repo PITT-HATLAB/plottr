@@ -643,3 +643,4 @@ class DDH5Writer(object):
             with FileOpener(self.filepath, 'a') as f:
                 add_cur_time_attr(f, name='last_change')
                 add_cur_time_attr(f[self.groupname], name='last_change')
+        self.inserted_rows += nrecords
