@@ -1,0 +1,15 @@
+We need to put in a batch file that adds the environment python to the path of a windows machine: 
+
+see this page: 
+
+https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/
+
+I ran into this issue on a windows 11 machine, but the fix that they suggested worked here. 
+
+Some more info: 
+
+the script ot put in the registry is this if you don't want to use a batch file: 
+
+in Computer\HKEY_CURRENT_USER\Software\Classes\*\shell\plottr\command put in this data
+
+C:\Users\Hatlab-MSMT1\.conda\envs\amps\python.exe "C:\Users\Hatlab-MSMT1\Documents\GitHub\plottr\apps\plottr_rightclick.py" "%1"
